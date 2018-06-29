@@ -153,6 +153,7 @@ RecordingSession <- R6::R6Class("RecordingSession",
       private$localHost <- host
       private$localPort <- port
       private$outputFileName <- outputFileName
+      # initialize / reset output file
       cat("", file = private$outputFileName, append = FALSE)
       private$sessionCookies <- sessionCookies
       private$startServer()
@@ -181,6 +182,7 @@ RecordingSession <- R6::R6Class("RecordingSession",
     writeEvent = function(evt) {
       cat(
         format(evt), "\n",
+        sep = "",
         file = private$outputFileName,
         append = TRUE
       )
