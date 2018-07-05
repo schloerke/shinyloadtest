@@ -6,13 +6,13 @@ Authors@R: c(
             person("Alan", "Dipert", role = c("aut", "cre"), email = "alan@rstudio.com"),
             person("Barbara", "Borges", role = c("aut"), email = "barbara@rstudio.com")
             )
-Description: shinyloadtest provides functions for recording user sessions, 
+Description: shinyloadtest provides functions for recording user sessions,
     playing those sessions back in parallel to simulate load, and analzying
     the results.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: 
+Imports:
     websocket,
     curl,
     httpuv,
@@ -27,7 +27,7 @@ Imports:
     dplyr,
     readr,
     magrittr
-Remotes: rstudio/websocket,
+Remotes: rstudio/websocket#13,
     rstudio/httpuv
 RoxygenNote: 6.0.1.9000
 Suggests:
