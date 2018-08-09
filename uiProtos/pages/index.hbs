@@ -1,0 +1,174 @@
+---
+layout: shiny-layout
+title: ShinyLoadTest UI Prototype
+sessionsButtons: 
+- {button: '4 workers', data: 'four-worker-chart'}
+- {button: '16 workers', data: 'sixteen-worker-chart'}
+durationFilters:
+- {button: 'Slowest min times', data: 'slowest-min'}
+- {button: 'Slowest max times', data: 'slowest-max'}
+- {button: 'Largest mean differences', data: 'largest-mean'}
+- {button: 'Data table', data: 'data-table'}
+---
+<style>
+  .slt-side-menu-item {
+    padding: 0.5rem 0;
+  } 
+  .stl-side-menu-icon {
+    padding: 0 0.25rem 0 0;
+  }
+</style>
+<div class="sui-layout-flex-vert-fullscreen">
+  <div class="sui-flex-0 uk-background-primary" style="">
+    <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+      <div class="uk-navbar-left">
+        <a href="#" class="uk-logo uk-padding-small">ShinyLoadTest</a>
+      </div>
+    </nav>
+  </div>
+  <div class="sui-flex-5 sui-layout-flex-horz">
+    <div class="sui-flex-1 sui-background-dark">
+      <ul class="uk-nav sui-nav-sidebar">
+        <li class="uk-active uk-slt-side-menu-item"><a href="#sessions"><span uk-icon="server" class="stl-side-menu-icon"></span> Sessions</a></li>
+        <li class="slt-side-menu-item"><a href="#sessions"><span uk-icon="clock" class="stl-side-menu-icon"></span> Time</a></li>
+        <li class="slt-side-menu-item"><a href="#duration"><span uk-icon="future" class="stl-side-menu-icon"></span> Event Duration</a></li>
+        <li class="slt-side-menu-item"><a href="#duration"><span uk-icon="git-fork" class="stl-side-menu-icon"></span>Event Concurrency</a></li>
+      </ul>
+    </div>
+    <div class="sui-flex-5 uk-padding">
+      {{!-- sessions section --}}
+      <section class="sui-layout-flex-vert" id="sessions">
+        <div class="sui-flex-0" style="text-align: center;">
+          {{> sui_segmentedButton id="sessions-report-controller" buttons=sessionsButtons}}
+        </div>
+        <div class="sui-flex-5" id="session-chart-view">
+          <div id="four-worker-chart">
+            <div class="uk-padding uk-padding-remove-bottom">
+              <p class="uk-text-meta">Below is the results of four sessions versus the baseline single session. Note that narrower bars mean better performance.</p>
+            </div>
+            <img src="SVG/4workerbaseline.svg"/>
+          </div>
+          <div id="sixteen-worker-chart" style="display:none">
+            <div class="uk-padding uk-padding-remove-bottom">
+              <p class="uk-text-meta">Below is the results of sixteen sessions versus the baseline single session. Note that narrower bars mean better performance.</p>
+            </div>
+            <img src="SVG/16workerbaseline.svg"/>
+          </div>
+        </div>
+      </section>
+      {{!-- event durration section --}}
+      <section class="sui-layout-flex-vert" id="duration" style="display:none">
+        <div class="sui-flex-0">
+          <div class="" style="text-align:center; margin-bottom: 2rem;">
+            {{> sui_segmentedButton id="duration-filters" buttons=durationFilters}}
+          </div>
+        </div>
+        <div class="sui-flex-5">
+          <div class="" style="display: flex; width:100%;margin-bottom:2rem;align-items:flex-end;">
+            <input id="box-plot-picker" type="number" value="5" min="1" max="500" style="text-align:right; margin-right:0.5rem; font-size:1.5rem; line-height-1.4;flex:1;max-width:90px;border:none;border-bottom:1px solid #afafaf;"/>
+            <h3 style="flex:4;margin:0;">slowest minimum times</h3>
+          </div>
+          <div class="uk-flex uk-grid-match uk-grid-small uk-child-width-1-4@m sui-chart-grid" uk-grid>
+              {{!-- this gets populated automatcally via JS --}}
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="js/nouislider.min.js"></script>
+<script src="js/sui.js"></script>
+<script>
+  
+  suiSegmentedButtons();
+
+  function suiSegmentedButtons(){
+    const segmentedControls = document.querySelectorAll('.sui-segmented-button');
+    for(let segControl of segmentedControls){
+      
+      //initialize the first option as the selected option
+      segControl.children[0].classList.add('sui-segmented-button-selected');
+      
+      // assign a click event listener to control the selected state
+      for( let segment of segControl.children){
+        segment.addEventListener('click', () => {
+          let selected = segControl.querySelector('.sui-segmented-button-selected');
+          if (selected !== segment) {
+            selected.classList.remove('sui-segmented-button-selected');
+            segment.classList.add('sui-segmented-button-selected');
+          }
+        });
+      }
+    }
+  }
+
+  // app specific handler for changing the number of box plots to show
+  const picker = document.querySelector('#box-plot-picker');
+  // this is so ugly but it's quick and this is just a prototype, but still :**(
+  const boxPlotTemplate = `<div class="">
+  <div class="uk-card uk-card-default uk-card-small">
+    <img src="SVG/boxplot.svg" style="width:100%;"/>
+  </div>
+</div>`;
+const adjustBoxPlots = ()=>{
+  const grid = document.querySelector('.sui-chart-grid');
+  if(picker.value > grid.children.length){
+    let toAdd = picker.value - grid.children.length;
+    for(let i = 0; i < toAdd; i++){
+      grid.insertAdjacentHTML('beforeend', boxPlotTemplate); 
+    }
+  }
+  else if(picker.value < grid.children.length){
+    let toTrim = grid.children.length - picker.value;
+    for(let i = 0; i < toTrim; i++){
+      let lastChild = grid.children.length - 1;
+      grid.children[lastChild].remove();
+    }
+  }
+};
+
+picker.addEventListener('input',adjustBoxPlots);
+//pick up the default value;
+adjustBoxPlots();
+
+  // app specific click handler for #sessions segmented control
+  const sessionsControllerSegments = document.querySelector('#sessions-report-controller').children;
+  const sessionsCharts = document.querySelector('#session-chart-view').children;
+  for (let segment of sessionsControllerSegments){
+    segment.addEventListener('click', (evt) => {
+      const chartToDisplay = segment.dataset.viewOption;
+      for(let chart of sessionsCharts){
+        chart.style.display = 'none';
+      }
+      document.querySelector(`#${chartToDisplay}`).style.display = 'block';
+    });
+  }
+
+//app specific click handler for #duration segmented control
+
+
+  // control the look of the navbar items
+  const sidebarNav = document.querySelector('.sui-nav-sidebar');
+  for(let item of sidebarNav.children){
+    item.children[0].addEventListener('click', (evt)=> {
+      evt.preventDefault();
+      for(let bar of sidebarNav.children){
+        bar.classList.remove('uk-active');
+      }
+      item.classList.add('uk-active');
+    });
+  }
+
+  const testSelector = document.querySelector('.sui-nav-sidebar');
+  for(let item of testSelector.children){
+    let link = item.children[0];
+    link.addEventListener('click', () => {
+      let newActivePage = document.querySelector(`#${link.href.split('#')[1]}`);
+      for(let section of document.querySelectorAll('section')){
+        section.style.display = 'none';
+      }
+      newActivePage.style.display = 'block';
+
+    });
+  }
+</script>

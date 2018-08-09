@@ -1,0 +1,27 @@
+{{#if vertical}}
+  <div class="sui-variable-axis--vert {{class}}">
+    <a class="sui-variable-axis-button">Tomato Meter<span uk-icon="triangle-left"></span></a>
+    <div uk-dropdown="mode:click;offset:0;pos:right-center" class="sui-variable-axis-dropdown">
+      <ul class="uk-nav uk-dropdown-nav sui-select-list">
+        {{#each values}}
+        <li>
+          <a href="#">{{this}}</a>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{else}}
+  <div class="sui-variable-axis {{class}}">
+    <a class="sui-variable-axis-button">Tomato Meter<span uk-icon="triangle-down"></span></a>
+    <div uk-dropdown="mode:click;offset:0;" class="sui-variable-axis-dropdown">
+      <ul class="uk-nav uk-dropdown-nav sui-select-list">
+        {{#each values}}
+        <li>
+          <a href="#">{{this}}</a>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/if}}

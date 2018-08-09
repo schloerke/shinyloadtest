@@ -1,0 +1,50 @@
+<div class="sui-grid-container movie-grid {{class}}">
+  <div id="scatter-plot" class="sui-scatter-plot movie-plot"></div>
+  {{> sui_variableAxis values=yaxis class="movie-axis-y" vertical="true"}}
+  {{> sui_variableAxis values=xaxis class="movie-axis-x" }}
+</div>
+
+<script>
+  let generateData = (num, min, max) => {
+    let result = [];
+    for(let i = 0; i < num; i++){
+      result.push(Math.floor(Math.random()*(max - min +1)+min));
+    }
+    return result;
+  };
+
+  let trace1 = {
+    type: 'scatter',
+      x: generateData(250, 0, 100),
+      y: generateData(250, 0, 100),
+      mode: 'markers',
+      marker: {
+        size: 10,
+        symbol: 'circle-open',
+        colorscale: [
+          [0,'lightblue'],
+          [1, '#1e87f0']
+        ],
+        //cmin: 0,
+        //cmax: 10,
+        color: generateData(250, 0, 30)
+      }
+    };
+
+    const data = [trace1];
+
+    const layout = {
+      autosize: true,
+      margin: {
+        t: 0,
+        b: 32
+      }
+    };
+
+    const config = {
+      displayModeBar: false
+    };
+
+    Plotly.newPlot('scatter-plot', data, layout, config);
+    Plotly.Plots.resize(document.getElementById('scatter-plot'));
+</script>

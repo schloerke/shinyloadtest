@@ -1,0 +1,16 @@
+<div class="sui-select">
+  <label class="sui-select-label">Genre (a movie can have multiple genres)</label>
+  <button class="uk-select sui-select-button" type="button">
+    {{values.[0]}}
+  </button>
+  <div uk-dropdown="mode: click; pos: bottom-justify; boundary: .sui-select; offset: 0;">
+    <ul class="uk-nav uk-dropdown-nav sui-select-list">
+      {{#each values}}
+      <li>
+        <a href="#">{{this}}</a>
+      </li>
+      {{/each}}
+      
+    </ul>
+  </div>
+</div>
