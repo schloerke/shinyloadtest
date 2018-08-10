@@ -2,6 +2,7 @@
 
 var assemble = require('assemble');
 var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var extname = require('gulp-extname')
 var helpers = require('handlebars-helpers')();
@@ -66,11 +67,13 @@ app.task('assets', ['uiKitAssets', 'jsAssets']);
 // The sass task autoprefixes the resulting CSS before writing it.
 app.task('sass', function(){
   return app.src('./assets/sass/**/*.scss')
+    .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
       grid: true
     }))
+    .pipe(sourcemaps.write())
     .pipe(app.dest(path.join(__dirname,'./dist/css')))
     .pipe(browserSync.stream());
 });

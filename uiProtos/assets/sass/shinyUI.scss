@@ -1,9 +1,20 @@
 // Order of this stuff is important for UIkit so the following sections MUST be respected
 // Import of UIkit variables and mixins
-@import "../uikit/src/scss/variables-theme.scss";
-@import "../uikit/src/scss/mixins-theme.scss";
+// @import "../uikit/src/scss/variables.scss";
+@import "../uikit/src/scss/mixins.scss";
+// @import "../uikit/src/scss/uikit.scss";
 
 // Custom variables and variable overrides
+$rStudioblue: rgba(117, 170, 219, 1);
+$darkblue: rgba(24, 46, 63, 1);
+$mutedlightblue: rgba(229, 239, 248, 1);
+$white: rgba(255, 255, 255, 1);
+$mutedblue: rgba(154, 193, 228, 1);
+
+$global-color: $rStudioblue; 
+$global-muted-background: $rStudioblue;
+$global-primary-background: $darkblue;
+
 $form-range-thumb-height: 1.2rem;
 $track-w: 20rem;
 $track-h: .25rem;
@@ -636,7 +647,7 @@ $sui-slider-cursor: grab;
 }
 
 .sui-background-dark {
-  background-color: #bfbfbf;
+  // background-color: #bfbfbf;
 }
 // styles sepeific to the map prototype, all NS'd map-
 .map-grid {
@@ -691,4 +702,4 @@ $sui-slider-cursor: grab;
 }
 
 // the default UIkit theme
-@import "../uikit/src/scss/uikit-theme.scss";
+@import "../uikit/src/scss/uikit.scss";
