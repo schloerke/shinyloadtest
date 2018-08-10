@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 uiProtos/node_modules
+.DS_Store
