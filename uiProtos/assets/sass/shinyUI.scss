@@ -40,7 +40,9 @@ $dist: $track-w - $thumb-d;
 @import "../uikit/src/scss/mixins.scss";
 
 // Custom or mixin overrides
- 
+ * {
+   box-sizing: border-box;
+ }
 // a set of styles to set up basic page layouts
 .sui-layout{
   // sane fluid layout
@@ -590,6 +592,38 @@ $sui-slider-cursor: grab;
 
 .stl-grid-chart{
   box-shadow: 0 0 10px $grid-card-shadow-color;
+  background-color: $white;
+}
+.slt-data-table {
+  // this is an absurd level of specificity, but it's what was required to override the UIkit styles
+  tr > th {
+    position:sticky; 
+    top: 106px; 
+    background-color: $button-primary-background;
+    font-weight: bold;
+    color: $white;
+    font-size: 1.1rem;
+  }
+
+  tr > td, 
+  tr > th {
+    text-align:center;
+  }
+
+  tr > td:first-of-type,
+  tr > th:first-of-type {
+    text-align:left;
+    padding-left: 1.5rem;
+  }
+}
+
+.slt-view-control {
+  position:sticky; 
+  top:0px; 
+  background-color:#fff; 
+  padding: 2rem; 
+  z-index:100;
+  text-align: center;
 }
 
 // fixing an issue with the built in grid component where it was automatically always applying a 
