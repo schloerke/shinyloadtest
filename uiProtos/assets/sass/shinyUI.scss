@@ -1,9 +1,6 @@
 // Order of this stuff is important for UIkit so the following sections MUST be respected
-// Import of UIkit variables and mixins
-// @import "../uikit/src/scss/variables.scss";
-@import "../uikit/src/scss/mixins.scss";
-// @import "../uikit/src/scss/uikit.scss";
 
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
 // Custom variables and variable overrides
 $rStudioblue: rgba(117, 170, 219, 1);
 $darkblue: rgba(24, 46, 63, 1);
@@ -11,9 +8,24 @@ $mutedlightblue: rgba(229, 239, 248, 1);
 $white: rgba(255, 255, 255, 1);
 $mutedblue: rgba(154, 193, 228, 1);
 
-$global-color: $rStudioblue; 
-$global-muted-background: $rStudioblue;
+
+$global-color: $darkblue; 
+$global-emphasis-color: $rStudioblue;
+$global-link-color: $rStudioblue;
+$global-link-hover-color: $mutedlightblue;
+
+$global-muted-color: lighten($darkblue, 15%);
+$global-muted-background: lighten($mutedlightblue, 4%);
 $global-primary-background: $darkblue;
+
+$button-primary-background: $rStudioblue;
+
+$grid-card-shadow-color: lighten($darkblue, 75%);
+$logo-face: 'Inconsolata', monospace;
+$logo-color: lighten($darkblue, 10%);
+$side-menu-border-color: transparentize($global-emphasis-color, 0.7);
+$side-menu-border: 1px solid $side-menu-border-color;
+$side-menu-item-color: lighten($global-color, 28%);
 
 $form-range-thumb-height: 1.2rem;
 $track-w: 20rem;
@@ -23,26 +35,12 @@ $track-c: #ccc;
 $filll-c: #95a;
 $dist: $track-w - $thumb-d;
 
+// Import of UIkit variables and mixins
+@import "../uikit/src/scss/variables.scss";
+@import "../uikit/src/scss/mixins.scss";
+
 // Custom or mixin overrides
-  @mixin track($fill: 0) {
-    box-sizing: border-box;
-    border: none;
-    width: $track-w; height: $track-h;
-    background: $track-c;
-    
-    @if $fill == 1 {
-      .sui-range-slider-container & {
-        background: linear-gradient($filll-c, $filll-c)
-          0/ var(--sx) 100% no-repeat $track-c
-      }
-    }
-  }
-
-  @mixin fill() {
-    height: $track-h;
-    background: $filll-c
-  }
-
+ 
 // a set of styles to set up basic page layouts
 .sui-layout{
   // sane fluid layout
@@ -116,92 +114,6 @@ $dist: $track-w - $thumb-d;
   }
 }
 
-
-// styles to make a cross-browser functional range input that relies on almost no JS
-/// override to UIKit's background setting in chrome that was causing problems
-  .uk-range:focus::-webkit-slider-runnable-track, 
-  .uk-range:active::-webkit-slider-runnable-track{
-    @include track(1)
-  }
-.sui-range {
-  
-  &-label {
-    display: block;
-    margin-bottom: 2rem;
-  }
-  .uk-range::-webkit-slider-thumb{
-    margin-top: -0.5rem;
-  }  
-
-  &-input{
-    &, &::-webkit-slider-thumb {
-		  -webkit-appearance: none;
-	  }
-    --range: calc(var(--max) - var(--min));
-    --ratio: calc((var(--val) - var(--min))/var(--range));
-    --sx: calc(.5 * #{$thumb-d} + var(--ratio) * (100% - #{$thumb-d}));
-    width: $track-w;
-    height: $thumb-d;
-    background:transparent;
-    position: relative;
-    z-index: 10;
-    top: 10px;
-    &::-webkit-slider-runnable-track { @include track(1) }
-    &::-moz-range-track { @include track }
-    &::-ms-track { @include track }
-    &::-moz-range-progress { @include fill }
-    &::-ms-fill-lower { @include fill }
-    &::-ms-tooltip { display: none }
-  }
-  output {
-    position: relative;
-    display: inline-block;
-    background-color: $background-primary-background;
-    height: 20px;
-    text-align: center;
-    color: white;
-    border-radius: 3px;
-    padding: 0.125rem 0.25rem;
-    font-size: 13px;
-    top: 15px;
-    left: .5 * $thumb-d;
-    transform: translate(calc((var(--val) - var(--min)) / (var(--max) - var(--min)) * #{$dist} - 50%));
-  }
-
-  &-slider-container{
-    margin-bottom: 1rem;
-    height: 5rem;
-  }
-  
-  &-marks{
-    list-style: none;
-    display: inline-flex;
-    justify-content: space-around;
-    align-items: baseline;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    z-index: 5;
-
-    li {
-      flex: 1;
-      font-size: 0.7rem;
-      padding: 0 2px;
-
-      &:first-of-type{
-        padding-left: 0;
-        text-align: left;
-        align-self: flex-start;
-      }
-      &:last-of-type{
-        padding-right: 0;
-        text-align: right;
-        align-self: flex-end;
-      }
-    }
-  }
-}
 
 // noUI slider's base styles the define the slider itself
 .noUi-target,
@@ -608,22 +520,32 @@ $sui-slider-cursor: grab;
 
 .sui-nav-sidebar {
   .uk-active {
-    animation: activeSlideIn 500ms ease-in-out 0s 1;
-    background: linear-gradient(#fff, #fff);
-    background-position: 3000px 0px;
-    background-size: 100% 100%;
+    background-color:$white;
+    box-shadow: 1px 0 $white;
+    border-top: $side-menu-border;
+    border-bottom: $side-menu-border;
 
     
     a {
-      color: $text-primary-color;
+      color: $logo-color;
     }
   }
   li {
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1rem 0.5rem 3rem;
 
     a {
-      color: $text-lead-color;
+      color: $side-menu-item-color;
     }
+  }
+
+  h1 {
+    font-family: $logo-face;
+    font-size: 1.5rem; 
+    font-weight: bold;
+    color: $logo-color;
+    padding: 0.5rem 0;
+    margin:0;
+
   }
 }
 
@@ -646,48 +568,31 @@ $sui-slider-cursor: grab;
   }
 }
 
-.sui-background-dark {
-  // background-color: #bfbfbf;
+//SLT specific styles
+.slt-side-menu-container{
+  // border-right: $side-menu-border;
+  box-shadow: inset 0px 0px 5px $side-menu-border-color;
 }
-// styles sepeific to the map prototype, all NS'd map-
-.map-grid {
-  grid-template-columns: 1fr auto;
-  
+#data-table{
+  display: none;
 }
-
-// styles specific to this prototype, all NS'd movie-
-.movie-grid {
-  grid-template-columns: 30px 1fr;
-  grid-template-rows: 1fr 30px;
-  
-}
-.movie-plot {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-}
-.movie-axis-x {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
-}
-.movie-axis-y {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
+#box-plot-picker {
+  text-align:right; 
+  margin-right:0.5rem; 
+  font-size:1.5rem; 
+  line-height:1.4;
+  flex:1;
+  max-width:70px;
+  border:none;
+  color: $global-emphasis-color;
+  border-bottom:1px solid $global-emphasis-color;
 }
 
-.main {
-  h1 {
-    margin: 0 0 0.25rem;
-    flex-basis: auto;
-  }
-  h4 {
-    margin: 0 0 2rem;
-    flex-basis: auto;
-  }
-  
+.stl-grid-chart{
+  box-shadow: 0 0 10px $grid-card-shadow-color;
 }
 
-
-// fixing an issue with the built in grid component where it was autmatically always applying a 
+// fixing an issue with the built in grid component where it was automatically always applying a 
 // -30px margin and a media query with a -40px margin for viewports >= 1200px
 .uk-grid {
   margin: 0;

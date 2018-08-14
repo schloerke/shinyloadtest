@@ -18,24 +18,19 @@
     padding: 0 0.25rem 0 0;
   }
 </style>
-<div class="sui-layout-flex-vert-fullscreen">
-  <div class="sui-flex-0 uk-background-primary" style="">
-    <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
-      <div class="uk-navbar-left">
-        <a href="#" class="uk-logo uk-padding-small">ShinyLoadTest</a>
-      </div>
-    </nav>
-  </div>
-  <div class="sui-flex-5 sui-layout-flex-horz">
-    <div class="sui-flex-1 uk-background-muted">
+
+
+  <div class="sui-flex-5 sui-layout-flex-horz" style="height: calc(100vh);">
+    <div class="sui-flex-1 uk-background-muted slt-side-menu-container">
       <ul class="uk-nav sui-nav-sidebar">
-        <li class="uk-active uk-slt-side-menu-item"><a href="#sessions"><span uk-icon="server" class="stl-side-menu-icon"></span> Sessions</a></li>
+        <li><h1>Shiny:loadtest</h1></li>
+        <li class="uk-active slt-side-menu-item"><a href="#sessions"><span uk-icon="server" class="stl-side-menu-icon"></span> Sessions</a></li>
         <li class="slt-side-menu-item"><a href="#sessions"><span uk-icon="clock" class="stl-side-menu-icon"></span> Time</a></li>
         <li class="slt-side-menu-item"><a href="#duration"><span uk-icon="future" class="stl-side-menu-icon"></span> Event Duration</a></li>
         <li class="slt-side-menu-item"><a href="#duration"><span uk-icon="git-fork" class="stl-side-menu-icon"></span>Event Concurrency</a></li>
       </ul>
     </div>
-    <div class="sui-flex-5 uk-padding">
+    <div class="sui-flex-4 uk-padding" style="max-height: calc(100vh); overflow-y:scroll;">
       <section class="sui-layout-flex-vert" id="sessions">
         <div class="sui-flex-0" style="text-align: center;">
           <div class="uk-button-group sui-segmented-button" id=sessions-report-controller>
@@ -58,8 +53,8 @@
         </div>
       </section>
       <section class="sui-layout-flex-vert" id="duration" style="display:none">
-        <div class="sui-flex-0">
-          <div class="" style="text-align:center; margin-bottom: 2rem;">
+        <div class="sui-flex-0" style="position:sticky; top:0px;">
+          <div class="" style="text-align:center; margin-bottom: 2rem; ">
             <div class="uk-button-group sui-segmented-button" id=duration-filters>
               <button class="uk-button uk-button-primary sui-segmented-button-button" data-view-option=slowest-min>Slowest min times</button>
   <button class="uk-button uk-button-primary sui-segmented-button-button" data-view-option=slowest-max>Slowest max times</button>
@@ -69,8 +64,8 @@
         </div>
         <div class="sui-flex-5" id="duration-chart-view">
           <div id="chart-grid-page">
-            <div class="" style="display: flex; width:100%;margin-bottom:2rem;align-items:flex-end;">
-              <input id="box-plot-picker" type="number" value="5" min="1" max="500" style="text-align:right; margin-right:0.5rem; font-size:1.5rem; line-height-1.4;flex:1;max-width:90px;border:none;border-bottom:1px solid #afafaf;"/>
+            <div class="" style="display: flex; width:100%;margin-bottom:2rem;align-items:flex-end; position:sticky; top:76px;">
+              <input id="box-plot-picker" type="number" value="5" min="1" max="500" />
               <h3 style="flex:4;margin:0;">slowest minimum times</h3>
             </div>
             <div class="uk-flex uk-grid-match uk-grid-small uk-child-width-1-4@m sui-chart-grid" uk-grid>
@@ -94,7 +89,7 @@
       </section>
     </div>
   </div>
-</div>
+
 <script src="js/nouislider.min.js"></script>
 <script src="js/sui.js"></script>
 <script>
@@ -140,7 +135,7 @@
   // app specific handler for changing the number of box plots to show
   const picker = document.querySelector('#box-plot-picker');
   // this is so ugly but it's quick and this is just a prototype, but still :**(
-  const boxPlotTemplate = `<div class=""><div class="uk-card uk-card-default uk-card-small">
+  const boxPlotTemplate = `<div class=""><div class="uk-card uk-card-small stl-grid-chart">
 <img src="SVG/boxplot.svg" style="width:100%;"/></div></div>`;
 
   const adjustBoxPlots = ()=>{
