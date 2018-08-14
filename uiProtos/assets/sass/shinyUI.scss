@@ -570,29 +570,33 @@ $sui-slider-cursor: grab;
   }
 }
 
+.sui-full-height {
+  height: calc(100vh);
+}
+
 //SLT specific styles
 .slt-side-menu-container{
   // border-right: $side-menu-border;
   box-shadow: inset 0px 0px 5px $side-menu-border-color;
+  padding-top: 1.5rem;
 }
-#data-table{
+#data-table,
+#duration,
+#sixteen-worker-chart {
   display: none;
 }
-#box-plot-picker {
-  text-align:right; 
-  margin-right:0.5rem; 
-  font-size:1.5rem; 
-  line-height:1.4;
-  flex:1;
-  max-width:70px;
-  border:none;
-  color: $global-emphasis-color;
-  border-bottom:1px solid $global-emphasis-color;
-}
 
-.stl-grid-chart{
-  box-shadow: 0 0 10px $grid-card-shadow-color;
-  background-color: $white;
+.sui-nav-sidebar h1 {
+  font-size: 1.9rem;
+}
+// more absurd specificity to beat out the UIkit styles
+#chart-grid-page .slt-chart-grid {
+  padding: 0 2rem 2rem; 
+
+  &-chart {
+    box-shadow: 0 0 10px $grid-card-shadow-color;
+    background-color: $white;
+  }
 }
 .slt-data-table {
   // this is an absurd level of specificity, but it's what was required to override the UIkit styles
@@ -624,6 +628,49 @@ $sui-slider-cursor: grab;
   padding: 2rem; 
   z-index:100;
   text-align: center;
+}
+
+.slt-side-menu-item {
+  padding: 0.5rem 0;
+ 
+  .stl-side-menu-icon {
+    display: inline-block;
+    padding: 0 0.5rem 0 0;
+  }
+} 
+
+
+.slt-main-content {
+  max-height: calc(100vh); 
+  overflow-y:scroll;
+}
+
+.slt-box-picker-container {
+  display: flex; 
+  width: 100%; 
+  padding: 0 2rem 2rem; 
+  align-items:flex-end; 
+  position:sticky; 
+  top:106px; 
+  z-index:100; 
+  background-color:#fff;
+
+  h3 {
+    flex: 4;
+    margin: 0;
+  }
+
+  #box-plot-picker {
+  text-align:right; 
+  margin-right:0.5rem; 
+  font-size:1.5rem; 
+  line-height:1.4;
+  flex:1;
+  max-width:70px;
+  border:none;
+  color: $global-emphasis-color;
+  border-bottom:1px solid $global-emphasis-color;
+}
 }
 
 // fixing an issue with the built in grid component where it was automatically always applying a 

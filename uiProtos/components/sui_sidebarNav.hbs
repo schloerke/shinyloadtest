@@ -1,0 +1,10 @@
+<ul class="uk-nav sui-nav-sidebar">
+  <li>
+    <h1>{{logo}}</h1>
+  </li>
+  {{#each menu}}
+  <li class="slt-side-menu-item">
+    <a href={{this.href}}><span uk-icon={{this.icon}} class="stl-side-menu-icon"></span>{{this.menuItem}}</a>
+  </li>
+  {{/each}}
+</ul>

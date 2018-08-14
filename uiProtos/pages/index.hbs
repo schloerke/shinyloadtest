@@ -9,28 +9,18 @@ durationFilters:
 - {button: 'Slowest max times', data: 'slowest-max'}
 - {button: 'Largest mean differences', data: 'largest-mean'}
 - {button: 'Data table', data: 'data-table'}
+sltSideMenu:
+- {href: '#sessions' ,icon: 'server', menuItem: 'Sessions'}
+- {href: '#sessions' ,icon: 'clock', menuItem: 'Time'}
+- {href: '#duration' ,icon: 'future', menuItem: 'Event Duration'}
+- {href: '#duration' ,icon: 'git-fork', menuItem: 'Event Concurrency'}
 ---
-<style>
-  .slt-side-menu-item {
-    padding: 0.5rem 0;
-  } 
-  .stl-side-menu-icon {
-    padding: 0 0.25rem 0 0;
-  }
-</style>
 
-
-  <div class="sui-flex-5 sui-layout-flex-horz" style="height: calc(100vh);">
+  <div class="sui-flex-5 sui-layout-flex-horz sui-full-height">
     <div class="sui-flex-1 uk-background-muted slt-side-menu-container">
-      <ul class="uk-nav sui-nav-sidebar">
-        <li><h1>Shiny:loadtest</h1></li>
-        <li class="uk-active slt-side-menu-item"><a href="#sessions"><span uk-icon="server" class="stl-side-menu-icon"></span> Sessions</a></li>
-        <li class="slt-side-menu-item"><a href="#sessions"><span uk-icon="clock" class="stl-side-menu-icon"></span> Time</a></li>
-        <li class="slt-side-menu-item"><a href="#duration"><span uk-icon="future" class="stl-side-menu-icon"></span> Event Duration</a></li>
-        <li class="slt-side-menu-item"><a href="#duration"><span uk-icon="git-fork" class="stl-side-menu-icon"></span>Event Concurrency</a></li>
-      </ul>
+      {{> sui_sidebarNav logo="Shiny:loadtest" menu=sltSideMenu }}
     </div>
-    <div class="sui-flex-4" style="max-height: calc(100vh); overflow-y:scroll;">
+    <div class="sui-flex-4 slt-main-content">
       {{!-- sessions section --}}
       <section class="sui-layout-flex-vert" id="sessions">
         <div class="sui-flex-0 slt-view-control">
@@ -43,7 +33,7 @@ durationFilters:
             </div>
             <img src="SVG/4workerbaseline.svg"/>
           </div>
-          <div id="sixteen-worker-chart" style="display:none">
+          <div id="sixteen-worker-chart">
             <div class="uk-padding uk-padding-remove-bottom">
               <p class="uk-text-meta">Below is the results of sixteen sessions versus the baseline single session. Note that narrower bars mean better performance.</p>
             </div>
@@ -52,17 +42,17 @@ durationFilters:
         </div>
       </section>
       {{!-- event durration section --}}
-      <section class="sui-layout-flex-vert" id="duration" style="display:none">
-        <div class="sui-flex-0 slt-view-control" style="">
+      <section class="sui-layout-flex-vert" id="duration">
+        <div class="sui-flex-0 slt-view-control">
             {{> sui_segmentedButton id="duration-filters" buttons=durationFilters}}
         </div>
         <div class="sui-flex-5" id="duration-chart-view">
           <div id="chart-grid-page">
-            <div class="" style="display: flex; width:100%; padding: 0 2rem 2rem; padding-bottom:2rem; align-items:flex-end; position:sticky; top:106px; z-index:100; background-color:#fff;">
+            <div class="slt-box-picker-container">
               <input id="box-plot-picker" type="number" value="5" min="1" max="500" />
-              <h3 style="flex:4;margin:0;">slowest minimum times</h3>
+              <h3>slowest minimum times</h3>
             </div>
-            <div class="uk-flex uk-grid-match uk-grid-small uk-child-width-1-4@m sui-chart-grid" style="padding: 0 2rem 2rem; margin-bottom:2rem;" uk-grid>
+            <div class="uk-flex uk-grid-match uk-grid-small uk-child-width-1-4@m slt-chart-grid" uk-grid>
                 {{!-- this gets populated automatcally via JS --}}
             </div>
           </div>
@@ -93,49 +83,14 @@ durationFilters:
   suiSegmentedButtons();
   suiSideNavBar();
 
-  // JS for potential SUI components
-  
-  function suiSideNavBar() {
-    const sidebarNav = document.querySelector('.sui-nav-sidebar');
-    for (let item of sidebarNav.children) {
-      item.children[0].addEventListener('click', (evt) => {
-        evt.preventDefault();
-        for (let bar of sidebarNav.children) {
-          bar.classList.remove('uk-active');
-        }
-        item.classList.add('uk-active');
-      });
-    }
-  }
-
-  function suiSegmentedButtons(){
-    const segmentedControls = document.querySelectorAll('.sui-segmented-button');
-    for(let segControl of segmentedControls){
-      
-      //initialize the first option as the selected option
-      segControl.children[0].classList.add('sui-segmented-button-selected');
-      
-      // assign a click event listener to control the selected state
-      for( let segment of segControl.children){
-        segment.addEventListener('click', () => {
-          let selected = segControl.querySelector('.sui-segmented-button-selected');
-          if (selected !== segment) {
-            selected.classList.remove('sui-segmented-button-selected');
-            segment.classList.add('sui-segmented-button-selected');
-          }
-        });
-      }
-    }
-  }
-
   // app specific handler for changing the number of box plots to show
   const picker = document.querySelector('#box-plot-picker');
   // this is so ugly but it's quick and this is just a prototype, but still :**(
-  const boxPlotTemplate = `<div class=""><div class="uk-card uk-card-small stl-grid-chart">
+  const boxPlotTemplate = `<div class=""><div class="uk-card uk-card-small slt-chart-grid-chart">
 <img src="SVG/boxplot.svg" style="width:100%;"/></div></div>`;
 
   const adjustBoxPlots = ()=>{
-    const grid = document.querySelector('.sui-chart-grid');
+    const grid = document.querySelector('.slt-chart-grid');
     if(picker.value > grid.children.length){
       let toAdd = picker.value - grid.children.length;
       for(let i = 0; i < toAdd; i++){
@@ -151,7 +106,7 @@ durationFilters:
     }
   };
 
-  picker.addEventListener('input',adjustBoxPlots);
+  picker.addEventListener('input', adjustBoxPlots);
   //pick up the default value;
   adjustBoxPlots();
 
@@ -222,13 +177,15 @@ durationFilters:
   const testSelector = document.querySelector('.sui-nav-sidebar');
   for(let item of testSelector.children){
     let link = item.children[0];
-    link.addEventListener('click', () => {
-      let newActivePage = document.querySelector(`#${link.href.split('#')[1]}`);
-      for(let section of document.querySelectorAll('section')){
-        section.style.display = 'none';
-      }
-      newActivePage.style.display = 'block';
+    if(link.href){
+      link.addEventListener('click', () => {
+        let newActivePage = document.querySelector(`#${link.href.split('#')[1]}`);
+        for(let section of document.querySelectorAll('section')){
+          section.style.display = 'none';
+        }
+        newActivePage.style.display = 'block';
 
-    });
+      });
+    }
   }
 </script>

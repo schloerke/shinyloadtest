@@ -63,3 +63,41 @@ function handleSelection(dropdown, item, button) {
   button.innerHTML = item.innerHTML;
   UIkit.dropdown(dropdown).hide();
 }
+
+// for SUI Sidebar nav component
+function suiSideNavBar() {
+  const sidebarNav = document.querySelector('.sui-nav-sidebar');
+  for (let item of sidebarNav.children) {
+    if (item.children[0].nodeName === "A") {
+      item.children[0].addEventListener('click', (evt) => {
+        evt.preventDefault();
+        for (let bar of sidebarNav.children) {
+          bar.classList.remove('uk-active');
+        }
+        item.classList.add('uk-active');
+      });
+    }
+  }
+  sidebarNav.children[1].classList.add('uk-active');
+}
+
+// for SUI segmented button control component
+function suiSegmentedButtons() {
+  const segmentedControls = document.querySelectorAll('.sui-segmented-button');
+  for (let segControl of segmentedControls) {
+
+    //initialize the first option as the selected option
+    segControl.children[0].classList.add('sui-segmented-button-selected');
+
+    // assign a click event listener to control the selected state
+    for (let segment of segControl.children) {
+      segment.addEventListener('click', () => {
+        let selected = segControl.querySelector('.sui-segmented-button-selected');
+        if (selected !== segment) {
+          selected.classList.remove('sui-segmented-button-selected');
+          segment.classList.add('sui-segmented-button-selected');
+        }
+      });
+    }
+  }
+}
