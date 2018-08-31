@@ -58,10 +58,90 @@ sltSideMenu:
         <div class="sui-flex-5" id="duration-chart-view">
           <div id="chart-grid-page">
             <div class="slt-box-picker-container">
-              <input id="box-plot-picker" type="number" value="5" min="1" max="7" />
+              <input id="box-plot-picker" type="number" value="5" min="1" max="27" />
               <h3>slowest minimum times</h3>
             </div>
             <div class="uk-flex uk-grid-match uk-grid-small uk-child-width-1-4@m slt-chart-grid" uk-grid>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
+                <div class="">
+                  <div class="uk-card uk-card-small slt-chart-grid-chart">
+                    <img src="SVG/boxplot.svg" style="width:100%;" /></div>
+                </div>
                 <div class="">
                   <div class="uk-card uk-card-small slt-chart-grid-chart">
                     <img src="SVG/boxplot.svg" style="width:100%;" /></div>
@@ -134,17 +214,21 @@ sltSideMenu:
     }
     const updateChartGrid = () => {
       // Check to make sure we aren't outside the bounds of the chart set
-      if (picker.value > picker.max) picker.value = picker.max;
-      else if (picker.value < picker.min) picker.value = picker.min;
+      const currentValue = Number(picker.value),
+        minValue = Number(picker.min),
+        maxValue = Number(picker.max);
+      
+      if (currentValue > maxValue) currentValue = maxValue;
+      else if (currentValue < minValue) currentValue = minValue;
 
       const visibleCharts = activeGrid.querySelectorAll('.slt-visible-chart').length;
-      if (picker.value > visibleCharts) {
-        for (let i = visibleCharts; i < picker.value; i++) {
+      if (currentValue > visibleCharts) {
+        for (let i = visibleCharts; i < currentValue; i++) {
           charts[i].classList.add('slt-visible-chart');
         }
       }
-      else if (picker.value < visibleCharts) {
-        for (let i = visibleCharts - 1; i >= picker.value; i--) {
+      else if (currentValue < visibleCharts) {
+        for (let i = visibleCharts - 1; i >= currentValue; i--) {
           charts[i].classList.remove('slt-visible-chart');
         }
       }
@@ -154,6 +238,26 @@ sltSideMenu:
     updateChartGrid();
   }
   
+  // SLT specific function to make the segmented controls work
+  function segmentedSectionViewer(segmentedControl, controlledView){
+    const segmentButtons = segmentedControl.children;
+    const pagesToShowHide = controlledView.children;
+
+    const switchSegmentViews = (viewsContainer, selectedView) => {
+      for (let view of viewsContainer) {
+        view.style.display = 'none';
+      }
+      document.querySelector(`#${selectedView}`).style.display = 'block';
+    };
+
+    for ( let button of segmentButtons) {
+      button.addEventListener('click', () => {
+        switchSegmentViews(pagesToShowHide, button.dataset.viewOption);
+      });
+    }
+    // select the first item in the control to be displayed by default
+    switchSegmentViews(pagesToShowHide, segmentButtons[0].dataset.viewOption);
+  }
     
   // random int generator helper
   const randInt = (min, max) => {
@@ -191,12 +295,7 @@ sltSideMenu:
   }
   
   // core logic to change views with a segmented button control
-  const switchSegmentViews = (viewsContainer, selectedView) => {
-    for(let view of viewsContainer){
-      view.style.display = 'none';
-    }
-    document.querySelector(`#${selectedView}`).style.display = 'block';
-  };
+  
 
   // app specific click handler for #sessions segmented control
   const sessionsControllerSegments = document.querySelector('#sessions-report-controller').children;
